@@ -10,7 +10,7 @@ public class PhotonPlayerHandler : Photon.PunBehaviour
         DontDestroyOnLoad( this );
     }
 
-    public void OnPhotonPlayerConnected ( PhotonPlayer newPlayer )
+    public override void OnPhotonPlayerConnected ( PhotonPlayer newPlayer )
     {
         if ( PhotonNetwork.isMasterClient )
         {
@@ -19,7 +19,7 @@ public class PhotonPlayerHandler : Photon.PunBehaviour
         }
     }
 
-    public void OnPhotonPlayerDisconnected ( PhotonPlayer otherPlayer )
+    public override void OnPhotonPlayerDisconnected ( PhotonPlayer otherPlayer )
     {
         if ( PhotonNetwork.isMasterClient )
         {
@@ -46,7 +46,6 @@ public class PhotonPlayerHandler : Photon.PunBehaviour
     /// <summary>Called by Unity when the application is closed. Disconnects.</summary>
     protected void OnApplicationQuit ( )
     {
-        VerifyCommon.FlushPlayTimes();
         PhotonNetwork.Disconnect();
     }
 
