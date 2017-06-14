@@ -47,6 +47,11 @@ public static class Extensions
         return go.GetComponent<PhotonView>() as PhotonView;
     }
 
+    public static PhotonView GetPhotonView ( this UnityEngine.Transform trans )
+    {
+        return trans.GetComponent<PhotonView>() as PhotonView;
+    }
+
     /// <summary>compares the squared magnitude of target - second to given float value</summary>
     public static bool AlmostEquals(this Vector3 target, Vector3 second, float sqrMagnitudePrecision)
     {
