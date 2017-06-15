@@ -8,7 +8,7 @@ public enum aaa
 [RequireComponent( typeof( PhotonView ) )]
 public class PhotonBehaviourScript : Photon.PunBehaviour, IPunObservable
 {
-    [ClassSelector (typeof( PhotonBehaviour))]
+    //[ClassSelector (typeof( PhotonBehaviour))]
     [SerializeField]
     private string pbEnum;
 
