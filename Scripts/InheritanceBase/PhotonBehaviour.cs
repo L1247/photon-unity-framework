@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class PhotonBehaviour : IPhotonEvent
 {
-        Dictionary<int , ccCallbackV1> callBackList = new Dictionary<int , ccCallbackV1>();
+        Dictionary<int , Action<object>> callBackList = new Dictionary<int , Action<object>>();
         RaiseEventOptions AllNoCache = new RaiseEventOptions () { CachingOption = EventCaching.DoNotCache , Receivers = ReceiverGroup.All , };
         RaiseEventOptions AllCache = new RaiseEventOptions () { CachingOption = EventCaching.AddToRoomCacheGlobal , Receivers = ReceiverGroup.All , };
         RaiseEventOptions OtherNoCache = new RaiseEventOptions () { CachingOption = EventCaching.DoNotCache , Receivers = ReceiverGroup.Others , };
@@ -133,42 +133,42 @@ public class PhotonBehaviour : IPhotonEvent
                         Hashtable hash = ( Hashtable ) content;
                         int callBackIndex = ( int ) hash[ "callBackIndex" ];
                         object obj = hash[ "eventContent" ];
-                        ccCallbackV1 Callback = callBackList[ callBackIndex ];
+                        Action<object> Callback = callBackList[ callBackIndex ];
                         Callback( obj );
                 }
         }
 
-        public void RPC_All ( ccCallbackV1 Callback , object obj = null )
+        public void RPC_All ( Action<object> Callback , object obj = null )
         {
                 RPC( AllNoCache , Callback , obj );
         }
 
-        public void RPC_AllCache ( ccCallbackV1 Callback , object obj = null )
+        public void RPC_AllCache ( Action<object> Callback , object obj = null )
         {
                 RPC( AllCache , Callback , obj );
         }
 
-        public void RPC_Others ( ccCallbackV1 Callback , object obj = null )
+        public void RPC_Others ( Action<object> Callback , object obj = null )
         {
                 RPC( OtherNoCache , Callback , obj );
         }
 
-        public void RPC_OthersCache ( ccCallbackV1 Callback , object obj = null )
+        public void RPC_OthersCache ( Action<object> Callback , object obj = null )
         {
                 RPC( OtherCache , Callback , obj );
         }
 
-        public void RPC_MasterClient ( ccCallbackV1 Callback , object obj = null )
+        public void RPC_MasterClient ( Action<object> Callback , object obj = null )
         {
                 RPC( MasterClientNoCache , Callback , obj );
         }
 
-        public void RPC_MasterClientCache ( ccCallbackV1 Callback , object obj = null )
+        public void RPC_MasterClientCache ( Action<object> Callback , object obj = null )
         {
                 RPC( MasterClientCache , Callback , obj );
         }
 
-        private void RPC ( RaiseEventOptions option , ccCallbackV1 Callback , object obj = null )
+        private void RPC ( RaiseEventOptions option , Action<object> Callback , object obj = null )
         {
 
                 int callBackIndex = callBackList.FirstOrDefault( x => x.Value == Callback ).Key;
@@ -191,9 +191,9 @@ public class PhotonBehaviour : IPhotonEvent
                 foreach ( var callback in entries )
                 {
                         Delegate test =
-                      Delegate.CreateDelegate( typeof( ccCallbackV1 ) , this , callback , false );
+                      Delegate.CreateDelegate( typeof( Action<object> ) , this , callback , false );
 
-                        callBackList.Add( index , ( ccCallbackV1 ) test );
+                        callBackList.Add( index , ( Action<object> ) test );
                         index++;
                 }
         }
