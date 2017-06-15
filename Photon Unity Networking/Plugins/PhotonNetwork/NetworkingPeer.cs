@@ -3040,7 +3040,8 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
         return instantiateEvent;
     }
 
-    internal GameObject DoInstantiate(Hashtable evData, PhotonPlayer photonPlayer, GameObject resourceGameObject)
+    internal GameObject DoInstantiate(Hashtable evData, PhotonPlayer photonPlayer, GameObject resourceGameObject 
+        ,  bool ustObjctPool = false)
     {
         // some values always present:
         string prefabName = (string)evData[(byte)0];
@@ -3101,7 +3102,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
             return null; // Ignore group
         }
 
-        if (ObjectPool != null)
+        if (ObjectPool != null && ustObjctPool == true )
         {
             GameObject go = ObjectPool.Instantiate(prefabName, position, rotation);
 

@@ -2432,9 +2432,10 @@ public static class PhotonNetwork
     /// <param name="rotation">Rotation Quaternion to apply on instantiation.</param>
     /// <param name="group">The group for this PhotonView.</param>
     /// <returns>The new instance of a GameObject with initialized PhotonView.</returns>
-    public static GameObject Instantiate(string prefabName, Vector3 position, Quaternion rotation, int group)
+    public static GameObject Instantiate(string prefabName, Vector3 position, Quaternion rotation, int group ,
+        bool useObjectPool = false)
     {
-        return Instantiate(prefabName, position, rotation, group, null);
+        return Instantiate(prefabName, position, rotation, group, null , useObjectPool );
     }
 
     /// <summary>
@@ -2447,7 +2448,8 @@ public static class PhotonNetwork
     /// <param name="group">The group for this PhotonView.</param>
     /// <param name="data">Optional instantiation data. This will be saved to it's PhotonView.instantiationData.</param>
     /// <returns>The new instance of a GameObject with initialized PhotonView.</returns>
-    public static GameObject Instantiate(string prefabName, Vector3 position, Quaternion rotation, int group, object[] data)
+    public static GameObject Instantiate(string prefabName, Vector3 position, Quaternion rotation, int group, object[] data ,
+        bool useObjectPool )
     {
         if (!connected || (InstantiateInRoomOnly && !inRoom))
         {
@@ -2490,7 +2492,7 @@ public static class PhotonNetwork
         Hashtable instantiateEvent = networkingPeer.SendInstantiate(prefabName, position, rotation, group, viewIDs, data, false);
 
         // Instantiate the GO locally (but the same way as if it was done via event). This will also cache the instantiationId
-        return networkingPeer.DoInstantiate(instantiateEvent, networkingPeer.LocalPlayer, prefabGo);
+        return networkingPeer.DoInstantiate(instantiateEvent, networkingPeer.LocalPlayer, prefabGo , useObjectPool );
     }
 
 
