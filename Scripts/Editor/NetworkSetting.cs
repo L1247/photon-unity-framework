@@ -13,7 +13,7 @@ public class NetworkSetting : EditorWindow
     {
         IpAddress = Common.ReadPhotonServerIPAddress();
         //MinPlayerPerRoom = Common.ReadMinPlayerPerRoom();
-        NowIPAddress = DouduckGame.Utility.SystemInfomation.LocalIP;
+        NowIPAddress = Network.player.ipAddress;
         
     }
 
