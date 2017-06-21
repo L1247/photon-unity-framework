@@ -2490,7 +2490,9 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
                 break;
 
             case PunEvent.Instantiation:
-                this.DoInstantiate((Hashtable)photonEvent[ParameterCode.Data], originatingPlayer, null);
+                //Star 修改Pool傳送
+                Hashtable evData = ( Hashtable ) photonEvent[ ParameterCode.Data ];
+                this.DoInstantiate( evData , originatingPlayer, null , (bool) evData[ ( byte ) 9 ] );
                 break;
 
             case PunEvent.CloseConnection:
@@ -2507,7 +2509,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
                 break;
 
             case PunEvent.DestroyPlayer:
-                Hashtable evData = (Hashtable)photonEvent[ParameterCode.Data];
+                evData = (Hashtable)photonEvent[ParameterCode.Data];
                 int targetPlayerId = (int)evData[(byte)0];
                 if (targetPlayerId >= 0)
                 {
@@ -2989,7 +2991,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
         return true;
     }
 
-    internal Hashtable SendInstantiate(string prefabName, Vector3 position, Quaternion rotation, int group, int[] viewIDs, object[] data, bool isGlobalObject)
+    internal Hashtable SendInstantiate(string prefabName, Vector3 position, Quaternion rotation, int group, int[] viewIDs, object[] data, bool isGlobalObject ,bool useObjectPool = false)
     {
         // first viewID is now also the gameobject's instantiateId
         int instantiateId = viewIDs[0];   // LIMITS PHOTONVIEWS&PLAYERS
@@ -3031,6 +3033,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 
         instantiateEvent[(byte)6] = PhotonNetwork.ServerTimestamp;
         instantiateEvent[(byte)7] = instantiateId;
+        instantiateEvent[ ( byte ) 9 ] = useObjectPool;
 
 
         RaiseEventOptions options = new RaiseEventOptions();

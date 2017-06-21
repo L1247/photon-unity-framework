@@ -2488,8 +2488,10 @@ public static class PhotonNetwork
             viewIDs[i] = AllocateViewID(player.ID);
         }
 
+        //Star ­×§ïPool¶Ç°e
         // Send to others, create info
-        Hashtable instantiateEvent = networkingPeer.SendInstantiate(prefabName, position, rotation, group, viewIDs, data, false);
+        Hashtable instantiateEvent = networkingPeer.SendInstantiate(prefabName, position, rotation, group, viewIDs, data, false 
+            , useObjectPool );
 
         // Instantiate the GO locally (but the same way as if it was done via event). This will also cache the instantiationId
         return networkingPeer.DoInstantiate(instantiateEvent, networkingPeer.LocalPlayer, prefabGo , useObjectPool );
