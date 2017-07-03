@@ -41,6 +41,7 @@ public class PhotonVoiceNetwork : MonoBehaviour
 			}
 			if (_instance == null)
 			{
+                print( "GetInstance" );
 				_singleton = new GameObject();
 				_instance = _singleton.AddComponent<PhotonVoiceNetwork>();
 				_singleton.name = "PhotonVoiceNetworkSingleton";
@@ -98,7 +99,7 @@ public class PhotonVoiceNetwork : MonoBehaviour
         client = new UnityVoiceFrontend(ConnectionProtocol.Udp);
     }
 
-    [RuntimeInitializeOnLoadMethod]
+    //[RuntimeInitializeOnLoadMethod]
     public static void RuntimeInitializeOnLoad()
     {
         getInstance();

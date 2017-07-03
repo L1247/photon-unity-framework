@@ -88,7 +88,7 @@ public class PhotonVoiceHandler : MonoBehaviour
         return sendThreadShouldRun;
     }
 
-    [RuntimeInitializeOnLoadMethod]
+    //[RuntimeInitializeOnLoadMethod]
     private static void RuntimeInitializeOnLoad()
     {
         // Set up a MonoBehaviour to run Photon Voice, and hide it
