@@ -14,11 +14,11 @@ MonoBehaviour:
   AppID: 2eab4d59-2a65-4aca-8263-d975eb041816
   VoiceAppID: 
   ChatAppID: 
-  HostType: 1
+  HostType: 2
   PreferredRegion: 0
   EnabledRegions: -1
   Protocol: 0
-  ServerAddress: 
+  ServerAddress: 192.168.1.119
   ServerPort: 5055
   VoiceServerPort: 5055
   JoinLobby: 0
@@ -42,4 +42,12 @@ MonoBehaviour:
   - RequestForPickupItems
   - RequestForPickupTimes
   - TaggedPlayer
+  - FixPlayerOffset
+  - ReveicePlayerStandData
+  - RpcFireShell
+  - RpcShoot
+  - Begin
+  - RpcDisableAnimator
+  - RpcEnableAnimator
+  - RpcTrexAttack
   DisableAutoOpenWizard: 1
