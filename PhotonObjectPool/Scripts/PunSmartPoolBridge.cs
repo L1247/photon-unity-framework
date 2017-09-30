@@ -28,6 +28,5 @@ public class PunSmartPoolBridge : MonoBehaviour, IPunPrefabPool
     public void Destroy(GameObject gameObject)
     {
 		SmartPool.Despawn(gameObject);
-       
     }
 }

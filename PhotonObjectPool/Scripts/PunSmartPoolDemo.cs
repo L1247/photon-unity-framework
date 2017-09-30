@@ -24,6 +24,23 @@ public class PunSmartPoolDemo: Photon.PunBehaviour {
         {
             PhotonNetwork.Instantiate( "Cube" , new Vector3( 0f , 0f , 0f ) , Quaternion.identity , 0 , true );
         }
+        
+        if ( Input.GetKeyDown( KeyCode.C ) )
+        {
+            PhotonNetwork.Instantiate( "Raptor1" , new Vector3( 0f , 0f , 0f ) , Quaternion.identity , 0 , true );
+        }
+
+        if ( Input.GetMouseButtonDown( 0 ) )
+        {
+            Ray ray = Camera.main.ScreenPointToRay( Input.mousePosition );
+            RaycastHit hit;
+            Debug.DrawRay( Camera.main.transform.position , Camera.main.transform.forward , Color.red , 10 );
+            if ( Physics.Raycast( ray , out hit , 10 ) )
+            {
+                print( "Hit " + hit.transform.name );
+                PhotonNetwork.Destroy( hit.collider.gameObject );
+            }
+        }
     }
 
 }
