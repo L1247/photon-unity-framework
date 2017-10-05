@@ -13,7 +13,7 @@ public class srPhotonBehaviour : Photon.PunBehaviour
         {
             if ( PhotonNetwork.isMasterClient == false )
             {
-                print( "Not MasterClient" );
+                //print( "Not MasterClient" );
                 MonoBehaviour mono = _iPhoton as MonoBehaviour;
                 srMonoUtility.SetEnable( mono , bEnable );
                 srMonoUtility.SetActive( mono.gameObject , bActive );

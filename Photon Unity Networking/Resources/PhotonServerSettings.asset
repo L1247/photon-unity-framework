@@ -50,4 +50,5 @@ MonoBehaviour:
   - RpcDisableAnimator
   - RpcEnableAnimator
   - RpcTrexAttack
+  - TargetChange
   DisableAutoOpenWizard: 1
