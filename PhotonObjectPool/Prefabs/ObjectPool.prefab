@@ -9,31 +9,31 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1097602272525408}
+  m_RootGameObject: {fileID: 1435033391037390}
   m_IsPrefabParent: 1
---- !u!1 &1097602272525408
+--- !u!1 &1435033391037390
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4447086063668806}
-  - component: {fileID: 114915155480325730}
-  - component: {fileID: 114020375389718970}
+  - component: {fileID: 4385882077532202}
+  - component: {fileID: 114921601310171472}
+  - component: {fileID: 114731992018397092}
   m_Layer: 0
-  m_Name: Pool
+  m_Name: ObjectPool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4447086063668806
+--- !u!4 &4385882077532202
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1097602272525408}
+  m_GameObject: {fileID: 1435033391037390}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -41,36 +41,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114020375389718970
+--- !u!114 &114731992018397092
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1097602272525408}
+  m_GameObject: {fileID: 1435033391037390}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c8a261a2ad4fe5e46bd70d80921ff8b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114915155480325730
+--- !u!114 &114921601310171472
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1097602272525408}
+  m_GameObject: {fileID: 1435033391037390}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bdf1bf1442e3313488092b3d20ce522e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PoolName: bullet
-  Prefab: {fileID: 1867252901708950, guid: be12ad79b25f04b458c9a7570a6d1d75, type: 2}
+  PoolName: Raptor1
+  Prefab: {fileID: 1988224198810682, guid: da5a4fab51fe67d408ebb5a523b53603, type: 2}
   DontDestroy: 0
   PrepareAtStart: 1
-  AllocationBlockSize: 30
+  AllocationBlockSize: 4
   MinPoolSize: 0
-  MaxPoolSize: 150
+  MaxPoolSize: 5
   OnMaxPoolSize: 2
   AutoCull: 1
   CullingSpeed: 1
-  DebugLog: 1
+  DebugLog: 0

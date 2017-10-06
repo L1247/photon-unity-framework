@@ -18,7 +18,7 @@ MonoBehaviour:
   PreferredRegion: 0
   EnabledRegions: -1
   Protocol: 0
-  ServerAddress: 192.168.1.119
+  ServerAddress: 192.168.1.106
   ServerPort: 5055
   VoiceServerPort: 5055
   JoinLobby: 0
@@ -27,10 +27,14 @@ MonoBehaviour:
   NetworkLogging: 1
   RunInBackground: 1
   RpcList:
+  - BattleMain_GameOverSync
+  - BattleMain_GameRestartSync
+  - Begin
   - Chat
   - ColorRpc
   - DestroyRpc
   - DoJump
+  - FixPlayerOffset
   - Flash
   - InstantiateRpc
   - Marco
@@ -41,14 +45,12 @@ MonoBehaviour:
   - PunRespawn
   - RequestForPickupItems
   - RequestForPickupTimes
-  - TaggedPlayer
-  - FixPlayerOffset
   - ReveicePlayerStandData
-  - RpcFireShell
-  - RpcShoot
-  - Begin
   - RpcDisableAnimator
   - RpcEnableAnimator
+  - RpcFireShell
+  - RpcShoot
   - RpcTrexAttack
+  - TaggedPlayer
   - TargetChange
   DisableAutoOpenWizard: 1

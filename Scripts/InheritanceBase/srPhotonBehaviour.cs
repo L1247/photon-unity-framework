@@ -4,19 +4,36 @@ public class srPhotonBehaviour : Photon.PunBehaviour
 {
     [Header("If Not MasterClient")]
     [SerializeField]
-    private bool bEnable , bActive;
+    private bool Enable , Active;
     // Use this for initialization
     protected virtual void Awake ( )
     {
-        iPhoton _iPhoton = GetComponent<iPhoton>();
-        if ( _iPhoton != null )
+        if ( PhotonNetwork.inRoom == false )
+            return;
+        SetMonoProperty();
+    }
+
+
+    public override void OnJoinedRoom ( )
+    {
+        SetMonoProperty();
+    }
+
+    void SetMonoProperty ( )
+    {
+        iPhoton[] iPhotons = GetComponents<iPhoton>();
+        for ( int i = 0 ; i < iPhotons.Length ; i++ )
         {
-            if ( PhotonNetwork.isMasterClient == false )
+            iPhoton _iPhoton = iPhotons[ i ];
+            if ( _iPhoton != null )
             {
-                //print( "Not MasterClient" );
-                MonoBehaviour mono = _iPhoton as MonoBehaviour;
-                srMonoUtility.SetEnable( mono , bEnable );
-                srMonoUtility.SetActive( mono.gameObject , bActive );
+                if ( PhotonNetwork.isMasterClient == false )
+                {
+                    //print( "Not MasterClient" );
+                    MonoBehaviour mono = _iPhoton as MonoBehaviour;
+                    srMonoUtility.SetEnable( mono , Enable );
+                    srMonoUtility.SetActive( mono.gameObject , Active );
+                }
             }
         }
     }
