@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// 負責設定 Photon連線時，非MasterClient是否開啟此GameObject的屬性等等
+/// </summary>
 public class srPhotonBehaviour : Photon.PunBehaviour
 {
     [Header("If Not MasterClient")]
