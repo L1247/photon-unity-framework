@@ -10,8 +10,13 @@ using System;
 /// <summary>
 /// 登入系統
 /// </summary>
-public class PhotonConnectSystem : Photon.PunBehaviour
+public class PhotonConnectSystem : Photon.PunBehaviour, iFlow
 {
+
+    public void StartFlow ( )
+    {
+        UI_IP_Input.SetActive( true );
+    }
 
     #region Public Variables
 
@@ -45,7 +50,9 @@ public class PhotonConnectSystem : Photon.PunBehaviour
     string _ConncectIP;
     private InputField InputField_IP;
     private Button Btn_Confirm , Btn_UseConnectedIP;
-    
+
+    public event EventHandler<srGameEventArgs> EventUpdated;
+
     #endregion
 
     #region MonoBehaviour CallBacks
@@ -187,10 +194,6 @@ public class PhotonConnectSystem : Photon.PunBehaviour
         }
     }
 
-    public void OnVerifySuccess ( )
-    {
-        UI_IP_Input.SetActive( true );
-    }
 
     /// <summary>
     /// Logs the feedback in the UI view for the player, as opposed to inside the Unity Editor for the developer.
@@ -229,7 +232,7 @@ public class PhotonConnectSystem : Photon.PunBehaviour
             LogFeedback( "OnConnectedToMaster: Next -> try to Join Random Room" );
             if ( ShowDebug )
             {
-                Debug.Log( "DemoAnimator/Launcher: OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room.\n Calling: PhotonNetwork.JoinRandomRoom(); Operation will fail if no room found" );
+                //Debug.Log( "DemoAnimator/Launcher: OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room.\n Calling: PhotonNetwork.JoinRandomRoom(); Operation will fail if no room found" );
             }
 
             // #Critical: The first we try to do is to join a potential existing room. If there is, good, else, we'll be called back with OnPhotonRandomJoinFailed()
@@ -249,7 +252,7 @@ public class PhotonConnectSystem : Photon.PunBehaviour
         LogFeedback( "<Color=Red>OnPhotonRandomJoinFailed</Color>: Next -> Create a new Room" );
         if ( ShowDebug )
         {
-            Debug.Log( "DemoAnimator/Launcher:OnPhotonRandomJoinFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom(null, new RoomOptions() {maxPlayers = 4}, null);" );
+            //Debug.Log( "DemoAnimator/Launcher:OnPhotonRandomJoinFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom(null, new RoomOptions() {maxPlayers = 4}, null);" );
         }
         // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
 
@@ -299,6 +302,8 @@ public class PhotonConnectSystem : Photon.PunBehaviour
         //if ( PhotonNetwork.room.playerCount == 1 )
         //{
         //}
+        if ( EventUpdated != null )
+            EventUpdated( this , new srGameEventArgs( "Connected" ) );
     }
 
     public override void OnPhotonPlayerConnected ( PhotonPlayer other )
@@ -324,7 +329,8 @@ public class PhotonConnectSystem : Photon.PunBehaviour
     {
         if ( Btn_Confirm )
             Btn_Confirm.gameObject.SetActive( bShow );
-        if ( Btn_UseConnectedIP && String.IsNullOrEmpty(_ConncectIP) == false)
+        if ( Btn_UseConnectedIP && String.IsNullOrEmpty( _ConncectIP ) == false )
             Btn_UseConnectedIP.gameObject.SetActive( bShow );
     }
+
 }
