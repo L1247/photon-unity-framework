@@ -5,9 +5,9 @@
 /// </summary>
 public class srPhotonBehaviour : Photon.PunBehaviour
 {
-    [Header("If Not MasterClient")]
+    [Header("Other Client   ")]
     [SerializeField]
-    private bool Enable , Active;
+    private bool ScriptEnable , GameObjectActive;
     // Use this for initialization
     protected virtual void Awake ( )
     {
@@ -34,8 +34,8 @@ public class srPhotonBehaviour : Photon.PunBehaviour
                 {
                     //print( "Not MasterClient" );
                     MonoBehaviour mono = _iPhoton as MonoBehaviour;
-                    srMonoUtility.SetEnable( mono , Enable );
-                    srMonoUtility.SetActive( mono.gameObject , Active );
+                    srMonoUtility.SetEnable( mono , ScriptEnable );
+                    srMonoUtility.SetActive( mono.gameObject , GameObjectActive );
                 }
             }
         }
