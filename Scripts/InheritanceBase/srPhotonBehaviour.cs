@@ -34,6 +34,8 @@ public class srPhotonBehaviour : Photon.PunBehaviour
 
     void SetMonoProperty ( )
     {
+        if ( PhotonNetwork.isMasterClient == true )
+            return;
         switch ( m_MonoType )
         {
             case MonoType.Mono:
@@ -43,7 +45,7 @@ public class srPhotonBehaviour : Photon.PunBehaviour
                 {
                     MonoBehaviour mono = monos[ i ];
                     //避免Photon Observe的物件被關閉
-                    if ( mono is IPunObservable == false)
+                    if ( mono is IPunObservable == false )
                         srMonoUtility.SetEnable( mono , ScriptEnable );
                 }
                 break;
@@ -54,13 +56,10 @@ public class srPhotonBehaviour : Photon.PunBehaviour
                     iPhoton _iPhoton = iPhotons[ i ];
                     if ( _iPhoton != null )
                     {
-                        if ( PhotonNetwork.isMasterClient == false )
-                        {
-                            //print( "Not MasterClient" );
-                            MonoBehaviour mono = _iPhoton as MonoBehaviour;
-                            srMonoUtility.SetEnable( mono , ScriptEnable );
-                            srMonoUtility.SetActive( mono.gameObject , GameObjectActive );
-                        }
+                        //print( "Not MasterClient" );
+                        MonoBehaviour mono = _iPhoton as MonoBehaviour;
+                        srMonoUtility.SetEnable( mono , ScriptEnable );
+                        srMonoUtility.SetActive( mono.gameObject , GameObjectActive );
                     }
                 }
                 break;
