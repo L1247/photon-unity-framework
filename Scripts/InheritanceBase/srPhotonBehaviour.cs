@@ -38,11 +38,13 @@ public class srPhotonBehaviour : Photon.PunBehaviour
         {
             case MonoType.Mono:
                 MonoBehaviour[] monos = GetComponents<MonoBehaviour>();
-                srMonoUtility.SetActive(gameObject, GameObjectActive );
+                srMonoUtility.SetActive( gameObject , GameObjectActive );
                 for ( int i = 0 ; i < monos.Length ; i++ )
                 {
                     MonoBehaviour mono = monos[ i ];
-                    srMonoUtility.SetEnable( mono , ScriptEnable );
+                    //避免Photon Observe的物件被關閉
+                    if ( mono is IPunObservable == false)
+                        srMonoUtility.SetEnable( mono , ScriptEnable );
                 }
                 break;
             case MonoType.IPhoton:
