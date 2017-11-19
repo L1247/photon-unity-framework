@@ -17,7 +17,13 @@ public class ConnectAndJoinRandom : Photon.MonoBehaviour
     /// <summary>if we don't want to connect in Start(), we have to "remember" if we called ConnectUsingSettings()</summary>
     private bool ConnectInUpdate = true;
 
-
+    private void Awake ( )
+    {
+        if ( PhotonNetwork.inRoom == true )
+        {
+            this.enabled = false;
+        }
+    }
     public virtual void Start ( )
     {
         PhotonNetwork.autoJoinLobby = false;    // we join randomly. always. no need to join a lobby to get the list of rooms.

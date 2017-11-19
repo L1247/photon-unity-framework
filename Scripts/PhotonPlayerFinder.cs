@@ -22,6 +22,7 @@ public class PhotonPlayerFinder
     /// </summary>
     static Dictionary<int , Transform> playerAvatarDic      = new Dictionary<int, Transform>();
 
+    static bool init;
     /// <summary>
     /// 註冊玩家初始位置，並初始化Dic
     /// </summary>
@@ -33,6 +34,7 @@ public class PhotonPlayerFinder
         {
             playerStandSpaceDic[ i + 1 ] = playerStandSpaceList[ i ];
         }
+        init = true;
     }
 
     /// <summary>
@@ -64,13 +66,13 @@ public class PhotonPlayerFinder
     {
         Debug.Log( trans );
         Debug.Log( "RegPlayer Avatar : " + playerID );
-        
+
         playerAvatarDic[ playerID ] = trans;
     }
 
     public static void UnRegPlayer ( int playerID )
     {
-        playerAvatarDic.Remove(playerID);
+        playerAvatarDic.Remove( playerID );
         Debug.Log( "UnRegAvatar : " + playerID );
     }
 
@@ -90,7 +92,7 @@ public class PhotonPlayerFinder
     /// </summary>
     /// <param name="playerID"></param>
     /// <returns></returns>
-    public static Transform GetPlayerAvatarInstance(int playerID)
+    public static Transform GetPlayerAvatarInstance ( int playerID )
     {
         return playerAvatarDic[ playerID ];
     }
@@ -102,13 +104,15 @@ public class PhotonPlayerFinder
     /// <returns></returns>
     public static Transform GetPlayerInitTransform ( int playerID )
     {
+        Transform _trans = null;
         // *** 透過playerID去playerIdDic找Index後，再去playerStandSpaceDic拿到真正的玩家初始位置。 ***
         int _index = playerIdDic.FirstOrDefault( kvp => kvp.Value == playerID ).Key;
-        Transform _trans = playerStandSpaceDic[ _index ];
+        if ( _index > 0 )
+            _trans = playerStandSpaceDic[ _index ];
         return _trans;
     }
 
-    public static int GetPlayerId(int playerIndex)
+    public static int GetPlayerId ( int playerIndex )
     {
         return playerIdDic[ playerIndex ];
     }
@@ -118,7 +122,7 @@ public class PhotonPlayerFinder
     /// </summary>
     /// <param name="playerID"></param>
     /// <returns></returns>
-    public static int GetPlayerIndex(int playerID)
+    public static int GetPlayerIndex ( int playerID )
     {
         int id = playerIdDic.FirstOrDefault( kvp => kvp.Value == playerID ).Key;
         return id;
@@ -131,9 +135,9 @@ public class PhotonPlayerFinder
 
     public static void PlayerConnected ( PhotonPlayer newPlayer )
     {
+        if ( init == false )
+            InitPlayerDic(StaticDataValue.MaxPlayerCount);
         int emptyIndex = playerIdDic.FirstOrDefault( kvp => kvp.Value == 0 ).Key;
-        if ( emptyIndex == 0 )
-            return;
         int playerID = newPlayer.ID;
         Debug.Log( "RegPlayer, ID : " + playerID );
         playerIdDic[ emptyIndex ] = playerID;
@@ -145,8 +149,6 @@ public class PhotonPlayerFinder
     {
         int playerID = otherPlayer.ID;
         int playerIndex = playerIdDic.FirstOrDefault( kvp => kvp.Value == playerID ).Key;
-        if ( playerIndex == 0 )
-            return;
         playerIdDic[ playerIndex ] = 0;
         PhotonPlayerHandler.instance.SyncPlayerIdDic( playerIdDic );
     }
