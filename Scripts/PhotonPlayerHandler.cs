@@ -1,5 +1,8 @@
-﻿using UnityEngine;
-
+﻿using System.Collections.Generic;
+using UnityEngine;
+/// <summary>
+/// 管理玩家登入與跟PhotonPlayerFinder註冊
+/// </summary>
 public class PhotonPlayerHandler : Photon.PunBehaviour
 {
     public static PhotonPlayerHandler instance;
@@ -10,12 +13,17 @@ public class PhotonPlayerHandler : Photon.PunBehaviour
         DontDestroyOnLoad( this );
     }
 
+    public override void OnJoinedRoom ( )
+    {
+        if ( PhotonNetwork.isMasterClient )
+            PhotonPlayerFinder.PlayerConnected( PhotonNetwork.player );
+    }
+
     public override void OnPhotonPlayerConnected ( PhotonPlayer newPlayer )
     {
         if ( PhotonNetwork.isMasterClient )
         {
-            //print( newPlayer.ID );
-            PlayerFinder.PlayerConnected( newPlayer );
+            PhotonPlayerFinder.PlayerConnected( newPlayer );
         }
     }
 
@@ -24,23 +32,19 @@ public class PhotonPlayerHandler : Photon.PunBehaviour
         if ( PhotonNetwork.isMasterClient )
         {
             //print( otherPlayer );
-            PlayerFinder.PlayerDisconnected( otherPlayer );
+            PhotonPlayerFinder.PlayerDisconnected( otherPlayer );
         }
     }
 
-    public void SyncPlayerStandSpaceList ( int[ ] standPlaceList )
+    public void SyncPlayerIdDic ( Dictionary<int , int> idDic )
     {
-        photonView.RPC( "ReveicePlayerStandData" , PhotonTargets.Others , standPlaceList );
+        photonView.RPC( "ReveicePlayerList" , PhotonTargets.Others , idDic );
     }
 
     [PunRPC]
-    private void ReveicePlayerStandData ( int[ ] standPlaceList )
+    private void ReveicePlayerList ( Dictionary<int , int> idDic )
     {
-        //foreach ( var item in standPlaceList )
-        //{
-        //    Debug.Log( item );
-        //}
-        PlayerFinder.SetPlayerStandSpaceDic( standPlaceList );
+        PhotonPlayerFinder.SetPlayerIdDic( idDic );
     }
 
     /// <summary>Called by Unity when the application is closed. Disconnects.</summary>

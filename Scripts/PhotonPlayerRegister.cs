@@ -10,11 +10,14 @@ public class PhotonPlayerRegister : Photon.PunBehaviour
 
     void Awake ( )
     {
+        print( photonView.owner );
         ownerID = photonView.owner.ID;
-        PlayerFinder.RegPlayer( transform , ownerID );
+        gameObject.name = gameObject.name + " (" + ownerID + ")";
+        PhotonPlayerFinder.RegPlayer( ownerID , transform );
+        srMessage.Broadcast( ConnectMessageEnum.PlayerConnected );
     }
     void OnDestroy ( )
     {
-        PlayerFinder.UnRegPlayer( ownerID );
+        PhotonPlayerFinder.UnRegPlayer( ownerID );
     }
 }
