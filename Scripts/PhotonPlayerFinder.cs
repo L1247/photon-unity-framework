@@ -7,7 +7,6 @@ using UnityEngine;
 /// </summary>
 public class PhotonPlayerFinder
 {
-    static List<Transform>             playerList           = new List<Transform>();
     static List<Transform>             playerStandSpaceList = new List<Transform>();
     /// <summary>
     /// Index (玩家順位) / OwnerID
@@ -78,8 +77,7 @@ public class PhotonPlayerFinder
 
     public static List<Transform> GetPlayerTransList ( )
     {
-        //return playerDic.Values.ToList();
-        return playerList;
+        return playerAvatarDic.Values.ToList();
     }
 
     public static List<int> GetPlayerIDList ( )
