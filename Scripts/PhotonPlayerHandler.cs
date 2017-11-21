@@ -44,6 +44,7 @@ public class PhotonPlayerHandler : Photon.PunBehaviour
     [PunRPC]
     private void ReveicePlayerList ( Dictionary<int , int> idDic )
     {
+        //print( "Rec Count : " + idDic.Count );
         PhotonPlayerFinder.SetPlayerIdDic( idDic );
     }
 

@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public class PhotonPlayerFinder
 {
+    static List<Transform>             playerList           = new List<Transform>();
     static List<Transform>             playerStandSpaceList = new List<Transform>();
     /// <summary>
     /// Index (玩家順位) / OwnerID
@@ -22,6 +23,8 @@ public class PhotonPlayerFinder
     static Dictionary<int , Transform> playerAvatarDic      = new Dictionary<int, Transform>();
 
     static bool init;
+    public readonly static int MaxPlayerCount = 4;
+
     /// <summary>
     /// 註冊玩家初始位置，並初始化Dic
     /// </summary>
@@ -33,7 +36,6 @@ public class PhotonPlayerFinder
         {
             playerStandSpaceDic[ i + 1 ] = playerStandSpaceList[ i ];
         }
-        init = true;
     }
 
     /// <summary>
@@ -42,10 +44,13 @@ public class PhotonPlayerFinder
     /// <param name="defaultPlayerCount"></param>
     public static void InitPlayerDic ( int defaultPlayerCount )
     {
+        if ( init == true )
+            return;
         for ( int i = 1 ; i < defaultPlayerCount + 1 ; i++ )
         {
             playerIdDic[ i ] = 0;
         }
+        init = true;
     }
 
     /// <summary>
@@ -67,6 +72,7 @@ public class PhotonPlayerFinder
         Debug.Log( "RegPlayer Avatar : " + playerID );
 
         playerAvatarDic[ playerID ] = trans;
+        playerList = playerAvatarDic.Values.ToList();
     }
 
     public static void UnRegPlayer ( int playerID )
@@ -77,7 +83,8 @@ public class PhotonPlayerFinder
 
     public static List<Transform> GetPlayerTransList ( )
     {
-        return playerAvatarDic.Values.ToList();
+        //return playerDic.Values.ToList();
+        return playerList;
     }
 
     public static List<int> GetPlayerIDList ( )
@@ -126,15 +133,10 @@ public class PhotonPlayerFinder
         return id;
     }
 
-    //public static int GetPlayerID ( Transform standPlace )
-    //{
-    //    return playerStandSpaceDic[ standPlace ];
-    //}
-
     public static void PlayerConnected ( PhotonPlayer newPlayer )
     {
         if ( init == false )
-            InitPlayerDic(StaticDataValue.MaxPlayerCount);
+            InitPlayerDic( MaxPlayerCount );
         int emptyIndex = playerIdDic.FirstOrDefault( kvp => kvp.Value == 0 ).Key;
         int playerID = newPlayer.ID;
         Debug.Log( "RegPlayer, ID : " + playerID );
