@@ -27,12 +27,12 @@ MonoBehaviour:
   NetworkLogging: 1
   RunInBackground: 1
   RpcList:
-  - BattleMain_GameOverSync
-  - BattleMain_GameRestartSync
   - Begin
   - Chat
+  - CheckPlayerInSphere
   - ColorRpc
   - DestroyRpc
+  - DestroyRPC
   - DoJump
   - FixPlayerOffset
   - Flash
@@ -45,19 +45,15 @@ MonoBehaviour:
   - PunRespawn
   - RequestForPickupItems
   - RequestForPickupTimes
-  - ReveicePlayerStandData
+  - ReveicePlayerList
+  - RPC_SetOffBomb
+  - RpcDie
   - RpcDisableAnimator
   - RpcEnableAnimator
   - RpcFireShell
+  - RpcPlay
   - RpcShoot
   - RpcTrexAttack
   - TaggedPlayer
-  - TargetChange
-  - CheckPlayerInSphere
-  - DestroyRPC
-  - RPC_SetOffBomb
-  - RpcDie
-  - RpcPlay
-  - ReveicePlayerList
   - TargetSync
   DisableAutoOpenWizard: 1

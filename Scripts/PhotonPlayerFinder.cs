@@ -83,7 +83,6 @@ public class PhotonPlayerFinder
 
     public static List<Transform> GetPlayerTransList ( )
     {
-        //return playerDic.Values.ToList();
         return playerList;
     }
 
