@@ -69,7 +69,6 @@ public class PhotonPlayerFinder
     public static void RegPlayer ( int playerID , Transform trans )
     {
         Debug.Log( trans );
-        Debug.Log( "RegPlayer Avatar : " + playerID );
 
         playerAvatarDic[ playerID ] = trans;
         playerList = playerAvatarDic.Values.ToList();
@@ -78,6 +77,7 @@ public class PhotonPlayerFinder
     public static void UnRegPlayer ( int playerID )
     {
         playerAvatarDic.Remove( playerID );
+        playerList = playerAvatarDic.Values.ToList();
         Debug.Log( "UnRegAvatar : " + playerID );
     }
 

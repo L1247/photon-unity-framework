@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-public class NetworkSetting : EditorWindow
+public class PhotonNetworkSettingWindow : EditorWindow
 {
     string IpAddress;
     string MinPlayerPerRoom;
@@ -50,10 +50,10 @@ public class NetworkSetting : EditorWindow
     }
 
     // Add menu item to show this demo.
-    [MenuItem( "ccTools/Network Setting _F12" )]
+    [MenuItem( "StarTools/Photon Network Setting _F12" )]
     static void Init ( )
     {
-        EditorWindow.GetWindow( typeof( NetworkSetting ) );
+        EditorWindow.GetWindow( typeof( PhotonNetworkSettingWindow ) );
     }
 
 }
