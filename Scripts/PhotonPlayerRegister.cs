@@ -14,7 +14,6 @@ public class PhotonPlayerRegister : Photon.PunBehaviour
         ownerID = photonView.owner.ID;
         gameObject.name = gameObject.name + " (" + ownerID + ")";
         PhotonPlayerFinder.RegPlayer( ownerID , transform );
-        srMessage.Broadcast( ConnectMessageEnum.PlayerConnected );
     }
     void OnDestroy ( )
     {
