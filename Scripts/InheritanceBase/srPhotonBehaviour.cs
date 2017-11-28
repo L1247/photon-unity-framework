@@ -40,13 +40,13 @@ public class srPhotonBehaviour : Photon.PunBehaviour
         {
             case MonoType.Mono:
                 MonoBehaviour[] monos = GetComponents<MonoBehaviour>();
-                srMonoUtility.SetActive( gameObject , GameObjectActive );
+                srPhotonUtility.SetActive( gameObject , GameObjectActive );
                 for ( int i = 0 ; i < monos.Length ; i++ )
                 {
                     MonoBehaviour mono = monos[ i ];
                     //避免Photon Observe的物件被關閉
                     if ( mono is IPunObservable == false )
-                        srMonoUtility.SetEnable( mono , ScriptEnable );
+                        srPhotonUtility.SetEnable( mono , ScriptEnable );
                 }
                 break;
             case MonoType.IPhoton:
@@ -58,8 +58,8 @@ public class srPhotonBehaviour : Photon.PunBehaviour
                     {
                         //print( "Not MasterClient" );
                         MonoBehaviour mono = _iPhoton as MonoBehaviour;
-                        srMonoUtility.SetEnable( mono , ScriptEnable );
-                        srMonoUtility.SetActive( mono.gameObject , GameObjectActive );
+                        srPhotonUtility.SetEnable( mono , ScriptEnable );
+                        srPhotonUtility.SetActive( mono.gameObject , GameObjectActive );
                     }
                 }
                 break;

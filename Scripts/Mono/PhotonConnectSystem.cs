@@ -10,7 +10,7 @@ using System;
 /// <summary>
 /// 登入系統
 /// </summary>
-public class PhotonConnectSystem : Photon.PunBehaviour, iFlow
+public class PhotonConnectSystem : Photon.PunBehaviour/*, iFlow*/
 {
 
     public void StartFlow ( )
@@ -51,7 +51,7 @@ public class PhotonConnectSystem : Photon.PunBehaviour, iFlow
     private InputField InputField_IP;
     private Button Btn_Confirm , Btn_UseConnectedIP;
 
-    public event EventHandler<srGameEventArgs> EventUpdated;
+    //public event EventHandler<srGameEventArgs> EventUpdated;
 
     #endregion
 
@@ -146,7 +146,7 @@ public class PhotonConnectSystem : Photon.PunBehaviour, iFlow
         //PhotonNetwork.PhotonServerSettings.ServerAddress = Common.ReadTextFileConfig("PhotonServerIPAddress");
         PhotonNetwork.PhotonServerSettings.ServerAddress = _ConnectIP;
         string Name = string.Empty;
-        Name = Common.ReadTextFileConfig( "PCName" );
+        Name = /*Common.ReadTextFileConfig( "PCName" );*/ string.Empty;
 
 
         // 取得本機名稱
@@ -160,7 +160,7 @@ public class PhotonConnectSystem : Photon.PunBehaviour, iFlow
         {
             if ( ipaddress.AddressFamily == AddressFamily.InterNetwork )
             {
-                Name += " " + ipaddress.ToString();
+                Name += /*" " + */ipaddress.ToString();
                 break;
             }
         }
@@ -302,8 +302,8 @@ public class PhotonConnectSystem : Photon.PunBehaviour, iFlow
         //if ( PhotonNetwork.room.playerCount == 1 )
         //{
         //}
-        if ( EventUpdated != null )
-            EventUpdated( this , new srGameEventArgs( "Connected" ) );
+        //if ( EventUpdated != null )
+        //    EventUpdated( this , new srGameEventArgs( "Connected" ) );
     }
 
     public override void OnPhotonPlayerConnected ( PhotonPlayer other )
