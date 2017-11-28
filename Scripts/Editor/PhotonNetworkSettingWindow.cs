@@ -3,7 +3,7 @@ using UnityEditor;
 
 public class PhotonNetworkSettingWindow : EditorWindow
 {
-    string IpAddress;
+    string IpAddress = string.Empty;
     string MinPlayerPerRoom;
     // The position of the window
     public Rect windowRect = new Rect( 100 , 100 , 200 , 200 );
@@ -11,16 +11,16 @@ public class PhotonNetworkSettingWindow : EditorWindow
 
     void OnEnable ( )
     {
-        IpAddress = Common.ReadPhotonServerIPAddress();
+        //IpAddress = Common.ReadPhotonServerIPAddress();
         //MinPlayerPerRoom = Common.ReadMinPlayerPerRoom();
         NowIPAddress = Network.player.ipAddress;
-        
     }
 
     void OnDisable ( )
     {
-        PhotonNetwork.PhotonServerSettings.ServerAddress = IpAddress;
-        Common.WritePhotonServerIPAddress( IpAddress );
+        if ( string.IsNullOrEmpty( IpAddress ) == false )
+            PhotonNetwork.PhotonServerSettings.ServerAddress = IpAddress;
+        //Common.WritePhotonServerIPAddress( IpAddress );
     }
 
     void OnGUI ( )
