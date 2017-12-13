@@ -43,11 +43,13 @@ MonoBehaviour:
   - PunPickup
   - PunPickupSimple
   - PunRespawn
+  - PunRPCRaptorinit
   - RequestForPickupItems
   - RequestForPickupTimes
   - ReveicePlayerList
   - RPC_SetOffBomb
   - RPC_WinAction
+  - RPCColliderOpen_Shutdown
   - RpcDie
   - RpcDisableAnimator
   - RpcEnableAnimator
@@ -55,6 +57,7 @@ MonoBehaviour:
   - RpcPlay
   - RpcShoot
   - RpcTrexAttack
+  - SetFingerEnable
   - TaggedPlayer
   - TargetSync
   DisableAutoOpenWizard: 1

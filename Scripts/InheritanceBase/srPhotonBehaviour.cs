@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 
 /// <summary>
@@ -18,6 +19,9 @@ public class srPhotonBehaviour : Photon.PunBehaviour
 
     [SerializeField]
     private MonoType m_MonoType ;
+
+    [SerializeField]
+    private MonoBehaviour[] DontDisableList ;
     // Use this for initialization
     protected virtual void Awake ( )
     {
@@ -40,13 +44,18 @@ public class srPhotonBehaviour : Photon.PunBehaviour
         {
             case MonoType.Mono:
                 MonoBehaviour[] monos = GetComponents<MonoBehaviour>();
-                srPhotonUtility.SetActive( gameObject , GameObjectActive );
+                srMonoUtility.SetActive( gameObject , GameObjectActive );
                 for ( int i = 0 ; i < monos.Length ; i++ )
                 {
                     MonoBehaviour mono = monos[ i ];
                     //避免Photon Observe的物件被關閉
                     if ( mono is IPunObservable == false )
-                        srPhotonUtility.SetEnable( mono , ScriptEnable );
+                        srMonoUtility.SetEnable( mono , ScriptEnable );
+                }
+
+                for ( int i = 0 ; i < DontDisableList.Length ; i++ )
+                {
+                    srMonoUtility.SetEnable( DontDisableList[ i ] , true );
                 }
                 break;
             case MonoType.IPhoton:
@@ -58,8 +67,8 @@ public class srPhotonBehaviour : Photon.PunBehaviour
                     {
                         //print( "Not MasterClient" );
                         MonoBehaviour mono = _iPhoton as MonoBehaviour;
-                        srPhotonUtility.SetEnable( mono , ScriptEnable );
-                        srPhotonUtility.SetActive( mono.gameObject , GameObjectActive );
+                        srMonoUtility.SetEnable( mono , ScriptEnable );
+                        srMonoUtility.SetActive( mono.gameObject , GameObjectActive );
                     }
                 }
                 break;
