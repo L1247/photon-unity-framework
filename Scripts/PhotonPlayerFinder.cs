@@ -68,7 +68,7 @@ public class PhotonPlayerFinder
     /// <param name="trans"></param>
     public static void RegPlayer ( int playerID , Transform trans )
     {
-        Debug.Log( trans );
+        //Debug.Log( trans );
 
         playerAvatarDic[ playerID ] = trans;
         playerList = playerAvatarDic.Values.ToList();
@@ -78,7 +78,7 @@ public class PhotonPlayerFinder
     {
         playerAvatarDic.Remove( playerID );
         playerList = playerAvatarDic.Values.ToList();
-        Debug.Log( "UnRegAvatar : " + playerID );
+        //Debug.Log( "UnRegAvatar : " + playerID );
     }
 
     public static List<Transform> GetPlayerTransList ( )

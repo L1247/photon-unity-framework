@@ -10,7 +10,7 @@ public class PhotonPlayerRegister : Photon.PunBehaviour
 
     void Awake ( )
     {
-        print( photonView.owner );
+        //print( photonView.owner );
         ownerID = photonView.owner.ID;
         gameObject.name = gameObject.name + " (" + ownerID + ")";
         PhotonPlayerFinder.RegPlayer( ownerID , transform );

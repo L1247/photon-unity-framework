@@ -20,6 +20,7 @@ public class srPhotonBehaviour : Photon.PunBehaviour
     [SerializeField]
     private MonoType m_MonoType ;
 
+    [Header("將MonoBehaviour放入")]
     [SerializeField]
     private MonoBehaviour[] DontDisableList ;
     // Use this for initialization
