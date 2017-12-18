@@ -81,6 +81,7 @@ public class PhotonPlayerFinder
         //Debug.Log( "UnRegAvatar : " + playerID );
     }
 
+
     public static List<Transform> GetPlayerTransList ( )
     {
         return playerList;
@@ -98,8 +99,23 @@ public class PhotonPlayerFinder
     /// <returns></returns>
     public static Transform GetPlayerAvatarInstance ( int playerID )
     {
+        if ( playerID <= 0 )
+        {
+            Debug.LogErrorFormat( "No Found PlayerID : {0}" , playerID );
+            return null;
+        }
         return playerAvatarDic[ playerID ];
     }
+
+    /// <summary>
+    /// 取得目前Client的角色實例(Avatar Player)
+    /// </summary>
+    /// <returns></returns>
+    public static Transform GetOwnerPlayerAvatarInstance ( )
+    {
+        return GetPlayerAvatarInstance( PhotonNetwork.player.ID );
+    }
+
 
     /// <summary>
     /// 透過玩家順序編號，取得玩家初始點的位置
