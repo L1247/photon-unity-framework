@@ -2,29 +2,44 @@
 using System.Linq;
 using UnityEngine;
 
+//////////////////////////////////////////////////////////////////////////
+// PlayerIndex : 由1開始
+// PlayerID    : 由1開始
+//////////////////////////////////////////////////////////////////////////
+
 /// <summary>
 /// 玩家[Avatar] ik 管理器
 /// </summary>
 public class PhotonPlayerFinder
 {
-    static List<Transform>             playerList           = new List<Transform>();
-    static List<Transform>             playerStandSpaceList = new List<Transform>();
+    static List<Transform>             playerList                     = new List<Transform>();
+    static List<Transform>             playerStandSpaceList           = new List<Transform>();
     /// <summary>
-    /// Index (玩家順位) / OwnerID
+    /// Index (玩家順位)從1開始 / OwnerID
     /// </summary>
-    static Dictionary<int , int>       playerIdDic          = new Dictionary<int , int>();
+    static Dictionary<int , int>       playerIdDic                    = new Dictionary<int , int>();
     /// <summary>
     /// Index (玩家是第幾順位) / PlayerStandPlace (玩家初始位置)
     /// </summary>
-    static Dictionary<int , Transform> playerStandSpaceDic  = new Dictionary<int, Transform >();
+    static Dictionary<int , Transform> playerStandSpaceDic            = new Dictionary<int, Transform >();
     /// <summary>
     /// OwnerID / Avatar Instance
     /// </summary>
-    static Dictionary<int , Transform> playerAvatarDic      = new Dictionary<int, Transform>();
+    static Dictionary<int , Transform> playerAvatarDic                = new Dictionary<int, Transform>();
+    /// <summary>
+    /// PlayerIndex / AvatarController GameObject
+    /// </summary>
+    static Dictionary<int , GameObject> avatarHpcontrollerInstanceDic = new Dictionary<int, GameObject>();
+
 
     static bool init;
+    /// <summary>
+    /// 設定最大玩家人數
+    /// </summary>
     public readonly static int MaxPlayerCount = 4;
+    static GameObject AvatarHPcontroller;
 
+    #region Player Register、Initialization
     /// <summary>
     /// 註冊玩家初始位置，並初始化Dic
     /// </summary>
@@ -80,8 +95,10 @@ public class PhotonPlayerFinder
         playerList = playerAvatarDic.Values.ToList();
         //Debug.Log( "UnRegAvatar : " + playerID );
     }
+    #endregion
 
 
+    #region Public Get Methods
     public static List<Transform> GetPlayerTransList ( )
     {
         return playerList;
@@ -148,26 +165,58 @@ public class PhotonPlayerFinder
         return id;
     }
 
-    public static void PlayerConnected ( PhotonPlayer newPlayer )
+    /// <summary>
+    /// 回傳AvatarHpControllerGameObject
+    /// </summary>
+    /// <param name="playerIndex">玩家順序編號</param>
+    /// <returns></returns>
+    public static GameObject GetAvatarHpControllerGo(int playerIndex)
+    {
+        GameObject result = null;
+        avatarHpcontrollerInstanceDic.TryGetValue( playerIndex ,out result );
+        return result;
+    }
+    #endregion
+
+    #region Handle Players Connection
+    /// <summary>
+    /// 每個玩家登入遊戲後呼叫，Master才會呼叫
+    /// </summary>
+    /// <param name="player"></param>
+    public static void PlayerConnected ( PhotonPlayer player )
     {
         if ( init == false )
             InitPlayerDic( MaxPlayerCount );
         int emptyIndex = playerIdDic.FirstOrDefault( kvp => kvp.Value == 0 ).Key;
-        int playerID = newPlayer.ID;
+        int playerID = player.ID;
         Debug.Log( "RegPlayer, ID : " + playerID );
         playerIdDic[ emptyIndex ] = playerID;
 
         PhotonPlayerHandler.instance.SyncPlayerIdDic( playerIdDic );
+        if ( AvatarHPcontroller == null )
+            AvatarHPcontroller = Resources.Load<GameObject>( "AvatarHPcontroller" );
+        GameObject avatarHpcontroller = Object.Instantiate( AvatarHPcontroller );
+        avatarHpcontroller.name = string.Format( "AvatarHPcontroller [{0}]" , emptyIndex );
+        avatarHpcontrollerInstanceDic.Add( emptyIndex , avatarHpcontroller );
     }
 
-    public static void PlayerDisconnected ( PhotonPlayer otherPlayer )
+    public static void PlayerDisconnected ( PhotonPlayer player )
     {
-        int playerID = otherPlayer.ID;
+        int playerID = player.ID;
         int playerIndex = playerIdDic.FirstOrDefault( kvp => kvp.Value == playerID ).Key;
         playerIdDic[ playerIndex ] = 0;
         PhotonPlayerHandler.instance.SyncPlayerIdDic( playerIdDic );
-    }
+        if ( avatarHpcontrollerInstanceDic.ContainsKey( playerIndex ) )
+        {
+            GameObject go = avatarHpcontrollerInstanceDic[playerIndex];
+            Object.Destroy( go );
+            avatarHpcontrollerInstanceDic.Remove( playerIndex );
+        }
 
+    }
+    #endregion
+
+    #region Debug Show Log
     public static void ShowAllPlayerID ( )
     {
         Debug.Log( "-------玩家ID列表-------" );
@@ -185,5 +234,6 @@ public class PhotonPlayerFinder
             Debug.Log( p.Value );
         }
     }
+    #endregion
 
 }
