@@ -27,9 +27,9 @@ public class PhotonPlayerFinder
     /// </summary>
     static Dictionary<int , Transform> playerAvatarDic                = new Dictionary<int, Transform>();
     /// <summary>
-    /// PlayerIndex / AvatarController GameObject
+    /// PlayerIndex / AvatarController GameObject PhotonViewID(ViewID)
     /// </summary>
-    static Dictionary<int , GameObject> avatarHpcontrollerInstanceDic = new Dictionary<int, GameObject>();
+    static Dictionary<int , int> avatarHpcontrollerInstanceDic = new Dictionary<int, int>();
 
 
     static bool init;
@@ -75,6 +75,15 @@ public class PhotonPlayerFinder
     public static void SetPlayerIdDic ( Dictionary<int , int> _playerDic )
     {
         playerIdDic = _playerDic;
+    }
+
+    /// <summary>
+    /// [Sync] Client Do This
+    /// </summary>
+    /// <param name="PlayerIDs"></param>
+    public static void SetAvatarHpGoDic ( Dictionary<int , int> _avatarPvIDDic )
+    {
+        avatarHpcontrollerInstanceDic = _avatarPvIDDic;
     }
 
     /// <summary>
@@ -170,10 +179,14 @@ public class PhotonPlayerFinder
     /// </summary>
     /// <param name="playerIndex">玩家順序編號</param>
     /// <returns></returns>
-    public static GameObject GetAvatarHpControllerGo(int playerIndex)
+    public static GameObject GetAvatarHpControllerGo ( int playerIndex )
     {
         GameObject result = null;
-        avatarHpcontrollerInstanceDic.TryGetValue( playerIndex ,out result );
+        int viewID =0;
+        avatarHpcontrollerInstanceDic.TryGetValue( playerIndex , out viewID );
+        PhotonView pv = PhotonView.Find( viewID );
+        if ( pv )
+            result = pv.gameObject;
         return result;
     }
     #endregion
@@ -192,12 +205,16 @@ public class PhotonPlayerFinder
         Debug.Log( "RegPlayer, ID : " + playerID );
         playerIdDic[ emptyIndex ] = playerID;
 
-        PhotonPlayerHandler.instance.SyncPlayerIdDic( playerIdDic );
+        // *** 產生AvatarHpcontroller ***
         if ( AvatarHPcontroller == null )
-            AvatarHPcontroller = Resources.Load<GameObject>( "AvatarHPcontroller" );
-        GameObject avatarHpcontroller = Object.Instantiate( AvatarHPcontroller );
+            AvatarHPcontroller = ResourcesManager.LoadAndCacheReource( "AvatarHPcontroller" ) as GameObject;
+        GameObject avatarHpcontroller = PhotonNetwork.Instantiate(
+            "AvatarHPcontroller" , Vector3.zero , Quaternion.identity , 0);
+        PhotonView pv = avatarHpcontroller.GetComponent<PhotonView>();
+        int viewID = pv.viewID;
         avatarHpcontroller.name = string.Format( "AvatarHPcontroller [{0}]" , emptyIndex );
-        avatarHpcontrollerInstanceDic.Add( emptyIndex , avatarHpcontroller );
+        avatarHpcontrollerInstanceDic.Add( emptyIndex , viewID );
+        PhotonPlayerHandler.instance.SyncPlayerIdDic( playerIdDic , avatarHpcontrollerInstanceDic );
     }
 
     public static void PlayerDisconnected ( PhotonPlayer player )
@@ -205,11 +222,13 @@ public class PhotonPlayerFinder
         int playerID = player.ID;
         int playerIndex = playerIdDic.FirstOrDefault( kvp => kvp.Value == playerID ).Key;
         playerIdDic[ playerIndex ] = 0;
-        PhotonPlayerHandler.instance.SyncPlayerIdDic( playerIdDic );
+        PhotonPlayerHandler.instance.SyncPlayerIdDic( playerIdDic , avatarHpcontrollerInstanceDic );
         if ( avatarHpcontrollerInstanceDic.ContainsKey( playerIndex ) )
         {
-            GameObject go = avatarHpcontrollerInstanceDic[playerIndex];
-            Object.Destroy( go );
+            int viewID = avatarHpcontrollerInstanceDic[playerIndex];
+            PhotonView pv = PhotonView.Find(viewID);
+            GameObject go = pv.gameObject;
+            PhotonNetwork.Destroy( go );
             avatarHpcontrollerInstanceDic.Remove( playerIndex );
         }
 

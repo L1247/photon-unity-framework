@@ -48,17 +48,19 @@ public class PhotonPlayerHandler : Photon.PunBehaviour
     /// <summary>
     /// 同步所有ID給其他Client做使用
     /// </summary>
-    /// <param name="idDic"></param>
-    public void SyncPlayerIdDic ( Dictionary<int , int> idDic )
+    /// <param name="idDic">所有ID的DIC</param>
+    /// <param name="avatarPvIDDic">所有avatarPvID的DIC</param>
+    public void SyncPlayerIdDic ( Dictionary<int , int> idDic , Dictionary<int , int> avatarPvIDDic )
     {
-        photonView.RPC( "ReveicePlayerList" , PhotonTargets.Others , idDic );
+        photonView.RPC( "ReveicePlayerList" , PhotonTargets.Others , idDic ,avatarPvIDDic );
     }
 
     [PunRPC]
-    private void ReveicePlayerList ( Dictionary<int , int> idDic )
+    private void ReveicePlayerList ( Dictionary<int , int> idDic , Dictionary<int , int> avatarPvIDDic )
     {
         //print( "Rec Count : " + idDic.Count );
         PhotonPlayerFinder.SetPlayerIdDic( idDic );
+        PhotonPlayerFinder.SetAvatarHpGoDic( avatarPvIDDic );
     }
 
     /// <summary>Called by Unity when the application is closed. Disconnects.</summary>
