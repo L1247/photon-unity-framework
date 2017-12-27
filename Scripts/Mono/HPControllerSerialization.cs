@@ -27,7 +27,8 @@ public class HPControllerSerialization : MonoBehaviour, IPunObservable
         {
             int hp =  (int)stream.ReceiveNext();
             //Debug.Log( hp );
-            hpController.SetHp( hp );
+            //hpController.SetHp( hp );
+            hpController.HP = hp;
         }
     }
 }

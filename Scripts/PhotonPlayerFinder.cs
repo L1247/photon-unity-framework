@@ -182,13 +182,35 @@ public class PhotonPlayerFinder
     public static GameObject GetAvatarHpControllerGo ( int playerIndex )
     {
         GameObject result = null;
-        int viewID =0;
+        int viewID = 0;
         avatarHpcontrollerInstanceDic.TryGetValue( playerIndex , out viewID );
+        //Debug.LogFormat( "ViewID : {0}" , viewID );
         PhotonView pv = PhotonView.Find( viewID );
         if ( pv )
             result = pv.gameObject;
         return result;
     }
+
+    /// <summary>
+    /// 取得AvatarHpController的GameObject陣列
+    /// </summary>
+    /// <returns></returns>
+    public static List<GameObject> GetAvatarHpControllerGoList ( )
+    {
+        List<GameObject> goList = new List<GameObject>();
+        List <int > idList = avatarHpcontrollerInstanceDic.Values.ToList();
+        for ( int i = 0 ; i < idList.Count ; i++ )
+        {
+            int viewId = idList[i];
+            PhotonView pv = PhotonView.Find(viewId);
+            if ( pv )
+            {
+                goList.Add( pv.gameObject );
+            }
+        }
+        return goList;
+    }
+
     #endregion
 
     #region Handle Players Connection
@@ -222,7 +244,6 @@ public class PhotonPlayerFinder
         int playerID = player.ID;
         int playerIndex = playerIdDic.FirstOrDefault( kvp => kvp.Value == playerID ).Key;
         playerIdDic[ playerIndex ] = 0;
-        PhotonPlayerHandler.instance.SyncPlayerIdDic( playerIdDic , avatarHpcontrollerInstanceDic );
         if ( avatarHpcontrollerInstanceDic.ContainsKey( playerIndex ) )
         {
             int viewID = avatarHpcontrollerInstanceDic[playerIndex];
@@ -232,6 +253,8 @@ public class PhotonPlayerFinder
             avatarHpcontrollerInstanceDic.Remove( playerIndex );
         }
 
+        // *** Sync ***
+        PhotonPlayerHandler.instance.SyncPlayerIdDic( playerIdDic , avatarHpcontrollerInstanceDic );
     }
     #endregion
 
