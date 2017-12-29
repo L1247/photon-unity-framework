@@ -19,4 +19,5 @@ public class PhotonPlayerRegister : Photon.PunBehaviour
     {
         PhotonPlayerFinder.UnRegPlayer( ownerID );
     }
+    
 }

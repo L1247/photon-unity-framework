@@ -96,8 +96,13 @@ public class PhotonPlayerFinder
 
         playerAvatarDic[ playerID ] = trans;
         playerList = playerAvatarDic.Values.ToList();
+        
     }
 
+    /// <summary>
+    /// 反註冊角色模型
+    /// </summary>
+    /// <param name="playerID">PhotonPlayer ID</param>
     public static void UnRegPlayer ( int playerID )
     {
         playerAvatarDic.Remove( playerID );
@@ -115,7 +120,7 @@ public class PhotonPlayerFinder
 
     public static List<int> GetPlayerIDList ( )
     {
-        return playerIdDic.Keys.ToList();
+        return playerIdDic.Values.ToList();
     }
 
     /// <summary>
